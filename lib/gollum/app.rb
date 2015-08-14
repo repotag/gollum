@@ -1,7 +1,9 @@
 # ~*~ encoding: utf-8 ~*~
 require 'cgi'
 require 'sinatra'
+require 'sinatra/assetpack'
 require 'gollum-lib'
+require '../gollum-editor/lib/gollum-editor.rb'
 require 'mustache/sinatra'
 require 'useragent'
 require 'stringex'
@@ -49,6 +51,7 @@ end
 module Precious
   class App < Sinatra::Base
     register Mustache::Sinatra
+    register Sinatra::AssetPack
     include Precious::Helpers
     
     dir     = File.dirname(File.expand_path(__FILE__))
@@ -84,6 +87,21 @@ module Precious
         # Tell mustache where the views are
         :views     => "#{dir}/views"
     }
+
+    set :scss, {
+        :load_paths => ["#{dir}/app/css"]
+    }
+
+    assets do
+      [Gollum::Editor::Default, Gollum::Editor.active_editor].uniq!.each do |editor|
+         serve '/css/', from: editor.css_path
+         serve '/javascript', from: editor.js_path
+      end
+      css :ie7,      ['/css/ie7.css']
+      css :template, ['/css/template.css']
+      css :print,    ['/css/print.css']
+      css_compression :sass
+    end
 
     # Sinatra error handling
     configure :development, :staging do

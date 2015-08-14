@@ -27,8 +27,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'gollum-lib', '~> 4.0', '>= 4.0.1'
   s.add_dependency 'kramdown', '~> 1.8.0'
   s.add_dependency 'sinatra', '~> 1.4', '>= 1.4.4'
+  s.add_dependency 'sinatra-assetpack', '~> 0.3.0'
   s.add_dependency 'mustache', ['>= 0.99.5', '< 1.0.0']
   s.add_dependency 'useragent', '~> 0.14.0'
+  s.add_dependency 'sass', '~> 3.4.0'
 
   s.add_development_dependency 'rack-test', '~> 0.6.2'
   s.add_development_dependency 'shoulda', '~> 3.5.0'

@@ -3,7 +3,7 @@ require 'cgi'
 require 'sinatra'
 require 'sinatra/assetpack'
 require 'gollum-lib'
-require '../gollum-editor/lib/gollum-editor.rb'
+require 'gollum-editor'
 require 'mustache/sinatra'
 require 'useragent'
 require 'stringex'
@@ -88,14 +88,9 @@ module Precious
         :views     => "#{dir}/views"
     }
 
-    set :scss, {
-        :load_paths => ["#{dir}/app/css"]
-    }
-
     assets do
-      [Gollum::Editor::Default, Gollum::Editor.active_editor].uniq!.each do |editor|
-         serve '/css/', from: editor.css_path
-         serve '/javascript', from: editor.js_path
+      Gollum::Editor.asset_paths do |asset_type, path|
+        serve asset_type, from: path
       end
       css :ie7,      ['/css/ie7.css']
       css :template, ['/css/template.css']

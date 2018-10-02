@@ -1,3 +1,4 @@
+source 'https://rubygems.org'
 if RUBY_PLATFORM == 'java'
   ruby '2.5.0', :engine => 'jruby', :engine_version => '9.2.0' if RUBY_PLATFORM == 'java'
   gem 'gollum-rjgit_adapter', :git => 'https://github.com/repotag/gollum-lib_rjgit_adapter' # For development purposes

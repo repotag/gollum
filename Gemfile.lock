@@ -1,11 +1,11 @@
 GIT
   remote: https://github.com/gollum/gollum-lib.git
-  revision: 690b19554d5f0b8626df04f2cfaf777a2fbffd19
+  revision: dd118faab404c83d4df09605e90b4eef14822266
   branch: gollum-lib-5.x
   specs:
     gollum-lib (5.0.a.4)
       gemojione (~> 3.2)
-      github-markup (~> 1.6)
+      github-markup (~> 3.0)
       gollum-grit_adapter (~> 1.0)
       nokogiri (~> 1.8)
       rouge (~> 3.1)
@@ -58,7 +58,7 @@ GEM
     ffi (1.9.25)
     gemojione (3.3.0)
       json
-    github-markup (1.7.0)
+    github-markup (3.0.1)
     gitlab-grit (2.8.2)
       charlock_holmes (~> 0.6)
       diff-lcs (~> 1.1)

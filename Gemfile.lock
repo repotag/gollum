@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/gollum/gollum-lib.git
-  revision: dd118faab404c83d4df09605e90b4eef14822266
+  revision: ff73122b12cbd0baf91a8a858175e1efc023837e
   branch: gollum-lib-5.x
   specs:
     gollum-lib (5.0.a.4)

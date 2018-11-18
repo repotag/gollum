@@ -60,12 +60,9 @@ module Precious
         true
       end
 
+      
       def allow_uploads
         @allow_uploads
-      end
-
-      def upload_dest
-        @upload_dest
       end
 
       def format

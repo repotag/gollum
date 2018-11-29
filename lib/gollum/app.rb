@@ -176,6 +176,7 @@ module Precious
               @page         = page
               @page.version = wiki.repo.log(wiki.ref, @page.path).first
               @content      = page.text_data
+              @etag         = page.sha
               mustache :edit
           else
             redirect_to("/create/#{encodeURIComponent(@name)}")
@@ -226,9 +227,11 @@ module Precious
           options.merge! author
         end
 
+        normalize = Gollum::Page.valid_extension?(fullname)
+
         begin
           committer = Gollum::Committer.new(wiki, options)
-          committer.add_to_index(dir, filename, format, contents)
+          committer.add_to_index(dir, filename, format, contents, {normalize: normalize})
           committer.after_commit do |committer, sha|
             wiki.clear_cache
             committer.update_working_dir(dir, filename, format)
@@ -278,11 +281,18 @@ module Precious
       end
 
       post '/edit/*' do
+        etag      = params[:etag]        
         path      = "/#{clean_url(sanitize_empty_params(params[:path]))}"
         page_name = CGI.unescape(params[:page])
         wiki      = wiki_new
         page      = wiki.paged(page_name, path, exact = true)
+        
         return if page.nil?
+        if etag != page.sha
+          # Signal edit collision and return the page's most recent version
+          halt 412, {etag: page.sha, text_data: page.text_data}.to_json
+        end
+        
         committer = Gollum::Committer.new(wiki, commit_message)
         commit    = { :committer => committer }
 
@@ -292,7 +302,6 @@ module Precious
         update_wiki_page(wiki, page.sidebar, params[:sidebar], commit) if params[:sidebar]
         committer.commit
 
-        redirect to("/#{page.escaped_url_path}") unless page.nil?
       end
 
 

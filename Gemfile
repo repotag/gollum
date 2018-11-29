@@ -8,6 +8,7 @@ else
   gem 'gollum-rugged_adapter', :git => 'https://github.com/gollum/rugged_adapter.git' # For development purposes
 end
 
+gem 'wikicloth'
 gem 'gollum-lib', :git => 'https://github.com/gollum/gollum-lib.git', :branch => 'gollum-lib-5.x' # For development purposes
 
 gemspec

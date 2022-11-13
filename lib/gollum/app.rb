@@ -385,7 +385,7 @@ module Precious
         path.gsub!(/^\//, '')
 
         begin
-          wiki.write_page(::File.join(path, name), format, params[:content], commit_message)
+          commit = wiki.write_page(::File.join(path, name), format, params[:content], commit_message)
 
           redirect to("/#{clean_url(::File.join(encodeURIComponent(path), encodeURIComponent(wiki.page_file_name(name, format))))}")
         rescue Gollum::DuplicatePageError, Gollum::IllegalDirectoryPath => e
@@ -681,14 +681,16 @@ module Precious
     #     :message   - The String commit message.
     #     :name      - The String author full name.
     #     :email     - The String email address.
+    #     :session   - Hash containing information on the session from which this Committer was initialized.
     # message is sourced from the incoming request parameters
     # author details are sourced from the session, to be populated by rack middleware ahead of us
     def commit_message
       msg               = (params[:message].nil? or params[:message].empty?) ? "[no message]" : params[:message]
-      commit_message    = { :message => msg }
+      commit_options  = { :message => msg }
       author_parameters = session['gollum.author']
-      commit_message.merge! author_parameters unless author_parameters.nil?
-      commit_message
+      commit_options.merge! author_parameters unless author_parameters.nil?
+      commit_options[:session] = @env
+      commit_options
     end
 
     def find_upload_dest(path)
